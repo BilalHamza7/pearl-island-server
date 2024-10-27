@@ -1,6 +1,10 @@
-**Pearl Island Server**
+### Pearl Island Server
 
-This is the server-side application for managing admin functionalities, product, price requests and inquiry management of Pearl Island.
+This is the server-side application for managing admin functionalities, product, price requests and inquiry management of Pearl Island. including Features like:
+
+- **Password Hashing**
+- **Session Management**
+- **CRUD Operations**
 
 ### Technologies Used
 
