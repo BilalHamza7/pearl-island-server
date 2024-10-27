@@ -4,7 +4,7 @@ This is the server-side application for managing admin functionalities, product,
 
 **Technologies Used**
 
-*Node.js* - JavaScript runtime
+*Node.js* - JavaScript runtime /n
 *Express* - Web framework for Node.js
 *MongoDB* - Database for storing admin and product data
 *Mongoose* - ODM for MongoDB
