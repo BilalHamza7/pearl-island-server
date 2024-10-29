@@ -30,8 +30,6 @@ app.use('/inquiry', inquiryRoute);
 app.use('/request', requestRoute);
 app.use('/product', productRoute);
 
-
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
