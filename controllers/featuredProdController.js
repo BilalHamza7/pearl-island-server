@@ -1,5 +1,10 @@
 import FeaturedProdModel from '../models/featuredProdModel';
 
+// get all featured products
+
+// save ids of featured products entered in any of the 
+
+
 export const getFeaturedProd = async (req, res) => {
     try {
         const products = FeaturedProdModel.find();
@@ -8,7 +13,7 @@ export const getFeaturedProd = async (req, res) => {
 
         res.status(200).json({ products });
     } catch (err) {
-        console.error(error)
-        res.status(500).json({ message: 'Internal Server Error!'})
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error!'});
     }
 }

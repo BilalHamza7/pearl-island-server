@@ -1,18 +1,19 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import session from 'express-session';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import adminRoute from './routes/adminRoute';
 import featuredProdRoute from './routes/featuredProdRoute';
 import inquiryRoute from './routes/inquiryRoute';
 import requestRoute from './routes/requestRoute';
 import productRoute from './routes/productRoute';
-import session from 'express-session';
-import dotenv from 'dotenv';
 
 const app = express();
 app.use(express.json()); // middleware to enable parsing request bodies
-const port = process.env.PORT;
+app.use(cookieParser());
 dotenv.config(); // reads .env file's variables and loads into process.env
-
+const port = process.env.PORT;
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
