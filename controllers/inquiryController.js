@@ -41,7 +41,7 @@ export const saveInquiry = async (req, res) => {
     const { fullName, companyName, email, mobileNumber, message } = req.body;
 
     try {
-        let inquiryId = getNextSequenceValue('inquiry');
+        let inquiryId = await getNextSequenceValue('inquiry');
         const id = 'INQ-' + inquiryId;
         const inquiry = await Inquiry.save({ inquiryId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message })
 
@@ -82,7 +82,7 @@ export const getInquiryByIdAndName = async (req, res) => {
     try {
         const inquiry = await Inquiry.find(id !== '' && { inquiryId: id } + name !== '' && { fullName: name });
 
-        if (!inquiry) res.status(404).json({ message: 'Could Not Find An Inquiry with the ID: ' + id });
+        if (!inquiry) res.status(404).json({ message: 'Could Not Find An Inquiry :(' });
         res.status(200).json({ inquiry });
     } catch (error) {
         console.error(error);
