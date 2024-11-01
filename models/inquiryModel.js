@@ -8,7 +8,7 @@ const inquirySchema = mongoose.Schema({
     mobileNumber: { type: Number, required: true },
     message: { type: String, required: true },
     companyName: { type: String, required: true },
-    Date: { type: Date, required: true },
+    date: { type: Date, required: true },
     responded: { type: Boolean, required: true },
 });
 
