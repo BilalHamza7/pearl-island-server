@@ -15,7 +15,7 @@ export const saveRequest = async (req, res) => {
     try {
         let requestId = await getNextSequenceValue('request');
         const id = 'REQ-' + requestId;
-        const request = await Request.save({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false })
+        const request = await Request.save({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
 
         if (!request) res.status(404).json({ message: 'Could Not Save Request, Please Try Again!' });
         res.status(200).json(request);
@@ -63,4 +63,16 @@ export const getSpecificRequest = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
+
+export const getLatestRequests = async (req, res) => {
+    try {
+        const requests = await Request.find().limit(5);
+
+        if (!requests) res.status(404).json({ message: 'Could Not Find Any Requests!' });
+        res.status(200).json({ requests });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error!', error });
+    }
+};

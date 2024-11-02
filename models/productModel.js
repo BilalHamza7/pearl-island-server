@@ -11,9 +11,9 @@ const productSchema = mongoose.Schema({
     cut: { type: String, required: true },
     origin: { type: String, required: true },
     shape: { type: String, required: true },
-    tratment: { type: String, required: true },
+    treatment: { type: String, required: true },
     clarity: { type: String, required: true },
-    certificate: { type: [String], required: true },
+    certificate: { type: [String], required: true }, // certificate url and available
     summary: { type: String, required: true },
     description: { type: String, required: true },
     images: { type: [String], required: true },

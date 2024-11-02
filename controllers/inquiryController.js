@@ -46,7 +46,6 @@ export const getInquiry = async (req, res) => {
     }
 };
 
-
 export const getInquiryByIdAndName = async (req, res) => {
     const { id, name } = req.body;
 
@@ -59,4 +58,16 @@ export const getInquiryByIdAndName = async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
+
+export const getLatestInquiry = async (req, res) => {
+    try {
+        const inquirys = await Inquiry.find().limit(5);
+
+        if (!inquirys) res.status(404).json({ message: 'Could Not Find Any Inquiries!' });
+        res.status(200).json({ inquirys });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error!', error });
+    }
+};
