@@ -1,4 +1,4 @@
-import { Counter } from '../models/idCounterModel';
+import { Counter } from '../models/idCounterModel.js';
 
 // initialize all sequences to begin with one
 // available sequences are admin, products, inquirys, requests

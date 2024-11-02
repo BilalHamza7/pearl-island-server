@@ -3,15 +3,15 @@ import mongoose from 'mongoose';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-import adminRoute from './routes/adminRoute';
-import featuredProdRoute from './routes/featuredProdRoute';
-import inquiryRoute from './routes/inquiryRoute';
-import requestRoute from './routes/requestRoute';
-import productRoute from './routes/productRoute';
+import adminRoute from './routes/adminRoute.js';
+import featuredProdRoute from './routes/featuredProdRoute.js';
+import inquiryRoute from './routes/inquiryRoute.js';
+import requestRoute from './routes/requestRoute.js';
+import productRoute from './routes/productRoute.js';
 
-const app = express();
+const app = express(); // initializing express app
 app.use(express.json()); // middleware to enable parsing request bodies
-app.use(cookieParser());
+app.use(cookieParser()); 
 dotenv.config(); // reads .env file's variables and loads into process.env
 const port = process.env.PORT;
 

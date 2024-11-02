@@ -1,6 +1,6 @@
-import Request from '../models/requestModel';
-import { getNextSequenceValue } from './idCounterController';
-import dateFilter from './dateFilter';
+import { Request } from '../models/requestModel.js';
+import { getNextSequenceValue } from './idCounterController.js';
+import { dateFilter } from './dateFilter.js';
 
 // save request
 // get all request
@@ -80,7 +80,7 @@ export const getLatestRequests = async (req, res) => {
 export const updateRequest = async (req, res) => {
     const id = req.params.id;
     const responded = req.body.responded;
-    
+
     try {
         const request = Request.findOneAndUpdate({ requestId: id }, { $set: { responded: responded } }, { new: true });
 

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getFeaturedProd, saveFeaturedProd } from '../controllers/featuredProdController';
+import { getFeaturedProd, saveFeaturedProd } from '../controllers/featuredProdController.js';
 const router = express.Router();
 
 router.get('/getFeaturedProd', getFeaturedProd);

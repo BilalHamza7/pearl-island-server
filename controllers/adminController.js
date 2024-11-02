@@ -1,6 +1,6 @@
-import Admin from '../models/adminModel';
+import { Admin } from '../models/adminModel.js';
 import bcrypt from 'bcrypt';
-import { getNextSequenceValue } from './idCounterController';
+import { getNextSequenceValue } from './idCounterController.js';
 
 {/**
     functions
@@ -26,7 +26,7 @@ const verifyPassword = async (enteredPassword, hashedPassword) => {  // for logi
 export const getAdminDetails = async (req, res) => {
     try {
         const sessionAdmin = req.session;
-        if(!sessionAdmin){
+        if (!sessionAdmin) {
             res.status(500).json({ message: 'No Data In The Session!' });
         }
         res.status(200).json({ sessionAdmin });
@@ -40,7 +40,8 @@ export const createAdmin = async (req, res) => {
     const { fullName, username, email, password } = req.body;
 
     try {
-        const id = getNextSequenceValue('admin');
+        let adminId = await getNextSequenceValue('admin');
+        const id = 'ADMIN-' + adminId;
         const hashedPassword = hashPassword(password);
         const admin = await Admin.save({
             adminId: id,
@@ -64,21 +65,17 @@ export const verifyAdmin = async (req, res) => {  // for log in
     const { email, password } = req.body;
     try {
         const admin = await Admin.findOne({ email });  // verify Email
-        if (!admin) {
-            res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
-        }
-
-        const hashedPassword = admin.password;
-        const isMatch = verifyPassword(password, hashedPassword); // verify entered Password
-        if (!isMatch) {
+        if (admin) {
+            const hashedPassword = admin.password;
+            const isMatch = verifyPassword(password, hashedPassword); // verify entered Password
+            if (isMatch) {
+                req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
+                req.session.save();
+                res.status(200).json({ message: 'Admin Found!' });
+            }
             res.status(404).json({ message: 'Incorrect Password, Try Again!' });
         }
-
-        //if login successful save credentials in the session 
-        req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
-        req.session.save();
-
-        res.status(200).json({ message: 'Admin Found!' });
+        res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });

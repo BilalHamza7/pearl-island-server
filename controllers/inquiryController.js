@@ -1,6 +1,6 @@
-import Inquiry from '../models/inquiryModel';
-import { getNextSequenceValue } from './idCounterController';
-import dateFilter from './dateFilter';
+import { Inquiry } from '../models/inquiryModel.js';
+import { getNextSequenceValue } from './idCounterController.js';
+import { dateFilter } from './dateFilter.js';
 // save inquiry
 // get all Inquiries
 // search filter including all types in one endpoint

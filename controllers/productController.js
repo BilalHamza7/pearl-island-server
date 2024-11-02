@@ -1,6 +1,6 @@
-import Product from '../models/productModel';
-import { getNextSequenceValue } from './idCounterController';
-import dateFilter from './dateFilter';
+import { Product } from '../models/productModel.js';
+import { getNextSequenceValue } from './idCounterController.js';
+import { dateFilter } from './dateFilter.js';
 
 export const saveProduct = async (req, res) => {
     const { name, kind, weight, colour, section, size, cut, origin, shape, treatment, clarity, certificate, summary, description, images, soldStatus } = req.body;

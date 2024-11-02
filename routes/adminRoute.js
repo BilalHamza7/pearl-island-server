@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import { verifyAdmin, logOut, updateAdmin, createAdmin, getAdminDetails, searchAdmin, updatePassword } from '../controllers/adminController';
+import { verifyAdmin, logOut, updateAdmin, createAdmin, getAdminDetails, searchAdmin, updatePassword } from '../controllers/adminController.js';
 
 router.get('/getAdmin', getAdminDetails); 
 router.post('/createAdmin', createAdmin);

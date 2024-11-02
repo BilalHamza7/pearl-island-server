@@ -1,5 +1,5 @@
 import express from 'express';
-import { getInquiry, getInquiryByIdAndName, getLatestInquiry, saveInquiry, updateInquiry } from '../controllers/inquiryController';
+import { getInquiry, getInquiryByIdAndName, getLatestInquiry, saveInquiry, updateInquiry } from '../controllers/inquiryController.js';
 const router = express.Router();
 
 router.post('/saveInquiry', saveInquiry);

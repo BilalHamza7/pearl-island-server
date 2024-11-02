@@ -1,11 +1,11 @@
 import express from 'express';
-import { getKindCount } from '../controllers/productController';
+import { getKindCount, getProducts, saveProduct } from '../controllers/productController.js';
 const router = express.Router();
 
 router.get('/getProduct', getProducts);
 router.post('/saveProduct', saveProduct);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
 router.get('/getKindCount', getKindCount);
+// router.put('/updateProduct/:id', updateProduct);
+// router.delete('/deleteProduct/:id', deleteProduct);
 
 export default router;

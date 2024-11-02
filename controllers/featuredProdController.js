@@ -1,4 +1,4 @@
-import FeaturedProdModel from '../models/featuredProdModel';
+import { FeaturedProd } from '../models/featuredProdModel.js';
 
 // get all featured products
 
@@ -7,7 +7,7 @@ import FeaturedProdModel from '../models/featuredProdModel';
 export const saveFeaturedProd = async (req, res) => {
     const featuredId = [...req.body];
 
-    const products = await FeaturedProdModel.save({ productid: featuredId });
+    const products = await FeaturedProd.save({ productid: featuredId });
 
     if (!products) res.status(404).json({ message: 'Could Not Save Featured Products!' });
 
@@ -16,7 +16,7 @@ export const saveFeaturedProd = async (req, res) => {
 
 export const getFeaturedProd = async (req, res) => {
     try {
-        const products = await FeaturedProdModel.find().select('productId');
+        const products = await FeaturedProd.find().select('productId');
 
         if (products.length === 0) res.status(404).json({ message: 'No Featured Products Available' });
 
