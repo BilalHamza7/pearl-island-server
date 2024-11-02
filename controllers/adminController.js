@@ -23,7 +23,7 @@ const verifyPassword = async (enteredPassword, hashedPassword) => {  // for logi
     return isMatch;
 }
 
-export const getAdmin = async (req, res) => {
+export const getAdminDetails = async (req, res) => {
     try {
         const sessionAdmin = req.session;
         if(!sessionAdmin){

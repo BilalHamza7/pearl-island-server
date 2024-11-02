@@ -71,3 +71,18 @@ export const getLatestInquiry = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
+
+export const updateInquiry = async (req, res) => {
+    const id = req.params.id;
+    const responded = req.body.responded;
+
+    try {
+        const inquiry = Inquiry.findOneAndUpdate({ inquiryId: id }, { $set: { responded: responded } }, { new: true });
+
+        if (!inquiry) res.status(404).json({ message: 'Could Not Update Inquiry :(' });
+        res.status(200).json({ inquiry });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error!' });
+    }
+}
