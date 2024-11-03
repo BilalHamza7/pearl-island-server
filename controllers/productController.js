@@ -9,7 +9,8 @@ export const saveProduct = async (req, res) => {
     try {
         let productId = await getNextSequenceValue('product');
         const id = 'PROD-' + productId;
-        const product = await Product.save({ productId: id, name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, dateListed: date, soldStatus: soldStatus });
+        const newProduct = new Product({ productId: id, name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, dateListed: date, soldStatus: soldStatus });
+        const product = await newProduct.save();
 
         if (!product) res.status(404).json({ message: 'Could Not Save Product, Please Try Again!' });
         res.status(200).json(product);

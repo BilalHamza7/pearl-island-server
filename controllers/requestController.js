@@ -15,7 +15,8 @@ export const saveRequest = async (req, res) => {
     try {
         let requestId = await getNextSequenceValue('request');
         const id = 'REQ-' + requestId;
-        const request = await Request.save({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
+        const newRequest = new Request({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
+        const request = newRequest.save();
 
         if (!request) res.status(404).json({ message: 'Could Not Save Request, Please Try Again!' });
         res.status(200).json(request);

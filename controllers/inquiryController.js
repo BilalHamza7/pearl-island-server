@@ -14,10 +14,10 @@ export const saveInquiry = async (req, res) => {
     try {
         let inquiryId = await getNextSequenceValue('inquiry');
         const id = 'INQ-' + inquiryId;
-        const inquiry = await Inquiry.save({ inquiryId: id, fullName: fullName, subject: subject, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, date: date, responded: false })
-
+        const newInquiry = new Inquiry({ inquiryId: id, fullName: fullName, subject: subject, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, date: date, responded: false })
+        const inquiry = await newInquiry.save();
         if (!inquiry) res.status(404).json({ message: 'Could Not Save Inquiry, Please Try Again!' });
-        res.status(200).json(inquiry);
+        res.status(200).json(inquiry);  
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });

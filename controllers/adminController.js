@@ -42,8 +42,8 @@ export const createAdmin = async (req, res) => {
     try {
         let adminId = await getNextSequenceValue('admin');
         const id = 'ADMIN-' + adminId;
-        const hashedPassword = hashPassword(password);
-        const admin = await Admin.save({
+        const hashedPassword = await hashPassword(password);
+        const newAdmin = new Admin({
             adminId: id,
             fullName: fullName,
             username: username,
@@ -51,9 +51,11 @@ export const createAdmin = async (req, res) => {
             password: hashedPassword,
         });
 
+        const admin = await newAdmin.save();
+
         if (admin) {
             console.log(admin);
-            res.status(200).json({ message: 'Admin Saved Successfully!', admin });
+            res.status(200).json({ message: 'Admin Saved Successfully!', adminId: admin.adminId });
         };
     } catch (error) {
         console.error(error);
@@ -71,11 +73,12 @@ export const verifyAdmin = async (req, res) => {  // for log in
             if (isMatch) {
                 req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
                 req.session.save();
-                res.status(200).json({ message: 'Admin Found!' });
+                return res.status(200).json({ message: 'Admin Found!' });
             }
-            res.status(404).json({ message: 'Incorrect Password, Try Again!' });
+            return res.status(404).json({ message: 'Incorrect Password, Try Again!' });
         }
-        res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
+        console.log('Received verification request:', req.body);
+        return res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });

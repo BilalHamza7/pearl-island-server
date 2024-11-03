@@ -8,10 +8,17 @@ import featuredProdRoute from './routes/featuredProdRoute.js';
 import inquiryRoute from './routes/inquiryRoute.js';
 import requestRoute from './routes/requestRoute.js';
 import productRoute from './routes/productRoute.js';
+import cors from 'cors';
+
+const corsOptions = {
+    origin: 'http://localhost:3000',
+}
+
 
 const app = express(); // initializing express app
+app.use(cors(corsOptions)); // middleware to allow requests from origin
 app.use(express.json()); // middleware to enable parsing request bodies
-app.use(cookieParser()); 
+app.use(cookieParser());
 dotenv.config(); // reads .env file's variables and loads into process.env
 const port = process.env.PORT;
 

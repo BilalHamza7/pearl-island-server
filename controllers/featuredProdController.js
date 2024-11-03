@@ -7,7 +7,9 @@ import { FeaturedProd } from '../models/featuredProdModel.js';
 export const saveFeaturedProd = async (req, res) => {
     const featuredId = [...req.body];
 
-    const products = await FeaturedProd.save({ productid: featuredId });
+    const newProducts = await FeaturedProd({ productid: featuredId });
+
+    const products = await newProducts.save();
 
     if (!products) res.status(404).json({ message: 'Could Not Save Featured Products!' });
 
