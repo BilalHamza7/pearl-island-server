@@ -26,10 +26,12 @@ const verifyPassword = async (enteredPassword, hashedPassword) => {  // for logi
 export const getAdminDetails = async (req, res) => {
     try {
         const sessionAdmin = req.session;
-        if (!sessionAdmin) {
+        if (sessionAdmin) {
+            res.status(200).json({ sessionAdmin });
+        } else {
+            F
             res.status(500).json({ message: 'No Data In The Session!' });
         }
-        res.status(200).json({ sessionAdmin });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!' });
@@ -75,7 +77,6 @@ export const verifyAdmin = async (req, res) => {  // for log in
             }
             return res.status(404).json({ message: 'Incorrect Password, Try Again!' });
         }
-        console.log('Received verification request:', req.body);
         return res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
     } catch (error) {
         console.error(error);
@@ -87,11 +88,12 @@ export const searchAdmin = async (req, res) => { // before resetting password
     const email = req.body;
     try {
         const admin = await Admin.findOne({ email });  // Searching for account
-        if (!admin) {
+
+        if (admin) {
+            res.status(200).json(admin.email);
+        } else {
             res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
         }
-
-        res.status(200).json(admin.email);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!', error });
@@ -108,11 +110,11 @@ export const updatePassword = async (req, res) => {
             { $set: { password: hashedPassword } },
             { new: true }
         );
-        if (!admin) {
+        if (admin) {
+            res.status(200).json({ message: 'Password Updated Successfully!' });
+        } else {
             res.status(404).json({ message: 'Could Not Update Password, Please Try Again!' });
         }
-
-        res.status(200).json({ message: 'Password Updated Successfully!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!' });

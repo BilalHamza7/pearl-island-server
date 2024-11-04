@@ -11,20 +11,25 @@ export const saveFeaturedProds = async (req, res) => {
 
     const products = await newProducts.save();
 
-    if (!products) res.status(404).json({ message: 'Could Not Save Featured Products!' });
+    if (products.length !== 0) {
+        return res.status(200).json({ products });
+    } else {
+        return res.status(404).json({ message: 'Could Not Save Featured Products!' });
+    }
 
-    res.status(200).json({ products });
 };
 
 export const getFeaturedProds = async (req, res) => {
     try {
         const products = await FeaturedProd.find().select('productId');
 
-        if (products.length === 0) res.status(404).json({ message: 'No Featured Products Available' });
-
-        res.status(200).json({ products });
+        if (products.length !== 0) {
+            return res.status(200).json({ products });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Featured Products!' });
+        }
     } catch (err) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!' });
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 };

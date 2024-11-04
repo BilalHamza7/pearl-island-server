@@ -16,6 +16,7 @@ export const saveRequest = async (req, res) => {
         let requestId = await getNextSequenceValue('request');
         const id = 'REQ-' + requestId;
         const newRequest = new Request({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
+        
         const request = await newRequest.save();
 
         if (!request) {
