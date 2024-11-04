@@ -3,7 +3,7 @@ const router = express.Router();
 
 import { verifyAdmin, logOut, updateAdmin, createAdmin, getAdminDetails, searchAdmin, updatePassword } from '../controllers/adminController.js';
 
-router.get('/getAdmin', getAdminDetails); 
+router.get('/getAdminDetails', getAdminDetails); 
 router.post('/createAdmin', createAdmin);
 router.post('/verifyAdmin', verifyAdmin);
 router.get('/searchAdmin', searchAdmin);

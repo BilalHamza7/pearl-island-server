@@ -18,20 +18,23 @@ export const saveRequest = async (req, res) => {
         const newRequest = new Request({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
         const request = await newRequest.save();
 
-        if (!request) res.status(404).json({ message: 'Could Not Save Request, Please Try Again!' });
-        res.status(200).json(request);
+        if (!request) {
+            return res.status(200).json({ request });
+        } else {
+            return res.status(404).json({ message: 'Could Not Save Request, Please Try Again!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
 
-export const getRequest = async (req, res) => {
+export const getRequests = async (req, res) => {
     const { date, responded } = req.body;
     let filter = {};
 
     if (date !== 'all') {
-        filteredDate = dateFilter(date);
+        filteredDate = await dateFilter(date);
         filter.date = filteredDate.date;
     };
     responded !== 'all' && (filter.responded = responded);
@@ -39,11 +42,14 @@ export const getRequest = async (req, res) => {
     try {
         const requests = await Request.find(filter).sort(filteredDate.sortedDate ? filteredDate.sortedDate : {});
 
-        if (!requests) res.status(404).json({ message: 'Could Not Find Any Requests!' });
-        res.status(200).json({ requests });
+        if (requests.length > 0) {
+            return res.status(200).json({ requests });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Any Requests!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
 
@@ -58,11 +64,14 @@ export const getSpecificRequest = async (req, res) => {
 
         const request = await Request.find(filter);
 
-        if (!request) res.status(404).json({ message: 'Could Not Find A Request :(' });
-        res.status(200).json({ request });
+        if (!request) {
+            return res.status(200).json({ request });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find A Request!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
 
@@ -70,11 +79,14 @@ export const getLatestRequests = async (req, res) => {
     try {
         const requests = await Request.find().limit(5);
 
-        if (!requests) res.status(404).json({ message: 'Could Not Find Any Requests!' });
-        res.status(200).json({ requests });
+        if (requests.length > 0) {
+            return res.status(200).json({ requests });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Any Requests!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
 
@@ -85,10 +97,13 @@ export const updateRequest = async (req, res) => {
     try {
         const request = Request.findOneAndUpdate({ requestId: id }, { $set: { responded: responded } }, { new: true });
 
-        if (!request) res.status(404).json({ message: 'Could Not Update Request :(' });
-        res.status(200).json({ request });
+        if (!request) {
+            return res.status(200).json({ request });
+        } else {
+            return res.status(404).json({ message: 'Could Not Update Request!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!' });
+        return res.status(500).json({ message: 'Internal Server Error!' });
     }
 }

@@ -1,4 +1,4 @@
-export const dateFilter = (date) => {
+export const dateFilter = async (date) => {
     const filteredDate = {};
     const now = new Date();
 

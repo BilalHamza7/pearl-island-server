@@ -12,11 +12,14 @@ export const saveProduct = async (req, res) => {
         const newProduct = new Product({ productId: id, name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, dateListed: date, soldStatus: soldStatus });
         const product = await newProduct.save();
 
-        if (!product) res.status(404).json({ message: 'Could Not Save Product, Please Try Again!' });
-        res.status(200).json(product);
+        if (product) {
+            return res.status(200).json(product);
+        } else {
+            return res.status(404).json({ message: 'Could Not Save Product, Please Try Again!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 }
 
@@ -69,11 +72,14 @@ export const getProducts = async (req, res) => {
     try {
         const products = await Product.find(filter);
 
-        if (!products) res.status(404).json({ message: 'Could Not Find Any Products!' });
-        res.status(200).json({ products });
+        if (products.length !== 0) {
+            return res.status(200).json({ products });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Any Products!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 }
 
@@ -84,10 +90,28 @@ export const getKindCount = async (req, res) => {
             { $project: { kind: "$_id", count: 1, _id: 0 } }
         ]);
 
-        if (!products) res.status(404).json({ message: 'Could Not Find Any Products!' });
-        res.status(200).json({ products });
+        if (products.length > 0) {
+            return res.status(200).json({ products });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Any Products!' });
+        }
+    } catch (error) {
+        console.error('Error in getKindCount:', error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+export const getLatestProducts = async (req, res) => {
+    try {
+        const products = await Product.find().limit(5);
+
+        if (products.length > 0) {
+            return res.status(200).json({ products });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find Any Products!' });
+        }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Internal Server Error!', error });
+        return res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};

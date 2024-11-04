@@ -1,8 +1,8 @@
 import express from 'express';
-import { getFeaturedProd, saveFeaturedProd } from '../controllers/featuredProdController.js';
+import { getFeaturedProds, saveFeaturedProds } from '../controllers/featuredProdController.js';
 const router = express.Router();
 
-router.get('/getFeaturedProd', getFeaturedProd);
-router.post('/saveFeaturedProd', saveFeaturedProd);
+router.get('/getFeaturedProds', getFeaturedProds);
+router.post('/saveFeaturedProds', saveFeaturedProds);
 
 export default router;

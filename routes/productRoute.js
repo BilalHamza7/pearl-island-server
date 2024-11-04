@@ -1,10 +1,11 @@
 import express from 'express';
-import { getKindCount, getProducts, saveProduct } from '../controllers/productController.js';
+import { getKindCount, getLatestProducts, getProducts, saveProduct } from '../controllers/productController.js';
 const router = express.Router();
 
-router.get('/getProduct', getProducts);
+router.get('/getProducts', getProducts);
 router.post('/saveProduct', saveProduct);
 router.get('/getKindCount', getKindCount);
+router.get('/getLatestProducts', getLatestProducts);
 // router.put('/updateProduct/:id', updateProduct);
 // router.delete('/deleteProduct/:id', deleteProduct);
 

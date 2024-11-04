@@ -4,7 +4,7 @@ import { FeaturedProd } from '../models/featuredProdModel.js';
 
 // an array of ids are received and saved which can be retreived as a whole array
 
-export const saveFeaturedProd = async (req, res) => {
+export const saveFeaturedProds = async (req, res) => {
     const featuredId = [...req.body];
 
     const newProducts = await FeaturedProd({ productid: featuredId });
@@ -16,7 +16,7 @@ export const saveFeaturedProd = async (req, res) => {
     res.status(200).json({ products });
 };
 
-export const getFeaturedProd = async (req, res) => {
+export const getFeaturedProds = async (req, res) => {
     try {
         const products = await FeaturedProd.find().select('productId');
 

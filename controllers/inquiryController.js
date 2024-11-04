@@ -24,7 +24,7 @@ export const saveInquiry = async (req, res) => {
     }
 };
 
-export const getInquiry = async (req, res) => {
+export const getInquirys = async (req, res) => {
     const { subject, date, responded } = req.body;
     let filter = {};
 
@@ -60,7 +60,7 @@ export const getInquiryByIdAndName = async (req, res) => {
     }
 };
 
-export const getLatestInquiry = async (req, res) => {
+export const getLatestInquirys = async (req, res) => {
     try {
         const inquirys = await Inquiry.find().limit(5);
 

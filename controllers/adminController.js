@@ -70,7 +70,7 @@ export const verifyAdmin = async (req, res) => {  // for log in
         if (admin) {
             const isMatch = await verifyPassword(password, admin.password); // verify entered Password
             if (isMatch) {
-                req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
+                // req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
                 return res.status(200).json({ message: 'Admin Found!', adminId: admin.adminId });
             }
             return res.status(404).json({ message: 'Incorrect Password, Try Again!' });
