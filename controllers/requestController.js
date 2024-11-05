@@ -35,7 +35,7 @@ export const getRequests = async (req, res) => {
     let filter = {};
 
     if (date !== 'all') {
-        filteredDate = await dateFilter(date);
+        const filteredDate = await dateFilter(date);
         filter.date = filteredDate.date;
     };
     responded !== 'all' && (filter.responded = responded);

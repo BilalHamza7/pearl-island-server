@@ -35,7 +35,7 @@ export const getInquirys = async (req, res) => {
 
     subject !== 'all' && (filter.subject = subject);
     if (date !== 'all') {
-        filteredDate = dateFilter(date);
+        const filteredDate = dateFilter(date);
         filter.date = filteredDate.date;
     };
     responded !== 'all' && (filter.responded = responded);

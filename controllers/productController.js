@@ -60,11 +60,11 @@ export const getProducts = async (req, res) => {
 
     kind !== 'all' && (filter.kind = kind);
     if (date !== 'all') {
-        filteredDate = await dateFilter(date);
+        const filteredDate = await dateFilter(date);
         filter.date = filteredDate.date;
     };
     if (weight !== 'all') {
-        filteredWeight = await weightFilter(weight);
+        const filteredWeight = await weightFilter(weight);
         filter.weight = filteredWeight.weight;
     };
     colour !== 'all' && (filter.colour = colour);
