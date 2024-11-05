@@ -5,10 +5,10 @@ export const dateFilter = async (date) => {
     try {
         switch (date) {
             case 'new-to-old':
-                filteredDate.sortedDate = { date: -1 };
+                filteredDate.sortedDate = { dateListed: -1 };
                 break;
             case 'old-to-new':
-                filteredDate.sortedDate = { date: 1 };
+                filteredDate.sortedDate = { dateListed: 1 };
                 break;
             case 'this-week':
                 const startWeek = new Date(now.setDate(now.getDate() - now.getDay()));

@@ -10,11 +10,11 @@ export const saveProduct = async (req, res) => {
         let productId = await getNextSequenceValue('product');
         const id = 'PROD-' + productId;
         const newProduct = new Product({ productId: id, name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, dateListed: date, soldStatus: soldStatus });
-        
-        const product = await newProduct.save();
 
+        const product = await newProduct.save();
+        console.log(product);
         if (product) {
-            return res.status(200).json(product);
+            return res.status(200).json(product.productId);
         } else {
             return res.status(404).json({ message: 'Could Not Save Product, Please Try Again!' });
         }
@@ -56,22 +56,27 @@ const weightFilter = async (weight) => {
 
 export const getProducts = async (req, res) => {
     const { kind, weight, colour, date, soldStatus } = req.body;
+    console.log(date);
     let filter = {};
+    let sortFilter = { dateListed: -1 };
 
     kind !== 'all' && (filter.kind = kind);
     if (date !== 'all') {
         const filteredDate = await dateFilter(date);
-        filter.date = filteredDate.date;
+        console.log(filteredDate);
+        filteredDate.date && (filter.dateListed = filteredDate?.date);
+        filteredDate.sortedDate && (sortFilter.sortedDate = filteredDate?.sortedDate);
     };
     if (weight !== 'all') {
         const filteredWeight = await weightFilter(weight);
         filter.weight = filteredWeight.weight;
     };
-    colour !== 'all' && (filter.colour = colour);
+    colour !== 'all' && (filter.section = colour);
     soldStatus && (filter.soldStatus = soldStatus);
 
     try {
-        const products = await Product.find(filter);
+        console.log(filter, sortFilter);
+        const products = await Product.find(filter).sort(sortFilter.sortedDate ? sortFilter.sortedDate : sortFilter);;
 
         if (products.length !== 0) {
             return res.status(200).json({ products });
@@ -116,3 +121,21 @@ export const getLatestProducts = async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error!', error });
     }
 };
+
+export const getProductById = async (req, res) => {
+    const gemstoneId = req.query.gemstoneId;
+    console.log(gemstoneId);
+
+    try {
+        const product = await Product.find({ productId: gemstoneId });
+        console.log(product);
+        if (product) {
+            return res.status(200).json({ product });
+        } else {
+            return res.status(404).json({ message: 'Could Not Find A Product!' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error!', error });
+    }
+}

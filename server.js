@@ -16,6 +16,7 @@ const corsOptions = {
 
 
 const app = express(); // initializing express app
+app.use(express.json({ limit: '10mb' })); // to allow larger document size
 app.use(cors(corsOptions)); // middleware to allow requests from origin
 app.use(express.json()); // middleware to enable parsing request bodies
 app.use(cookieParser());

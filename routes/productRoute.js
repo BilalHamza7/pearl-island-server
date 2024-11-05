@@ -1,8 +1,9 @@
 import express from 'express';
-import { getKindCount, getLatestProducts, getProducts, saveProduct } from '../controllers/productController.js';
+import { getKindCount, getLatestProducts, getProductById, getProducts, saveProduct } from '../controllers/productController.js';
 const router = express.Router();
 
-router.get('/getProducts', getProducts);
+router.post('/getProducts', getProducts);
+router.get('/getProductById', getProductById);
 router.post('/saveProduct', saveProduct);
 router.get('/getKindCount', getKindCount);
 router.get('/getLatestProducts', getLatestProducts);

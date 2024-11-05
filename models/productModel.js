@@ -13,12 +13,12 @@ const productSchema = mongoose.Schema({
     shape: { type: String, required: true },
     treatment: { type: String, required: true },
     clarity: { type: String, required: true },
-    certificate: { type: [String], required: true }, // certificate url and available
+    certificate: { type: String, required: false },
     summary: { type: String, required: true },
     description: { type: String, required: true },
     images: { type: [String], required: true },
     dateListed: { type: Date, required: true },
-    soldStatus: { type: Boolean, required: true },
+    soldStatus: { type: Boolean, required: false },
 });
 
 export const Product = mongoose.model('Product', productSchema);
