@@ -7,7 +7,7 @@ import { FeaturedProd } from '../models/featuredProdModel.js';
 export const saveFeaturedProds = async (req, res) => {
     const featuredId = [...req.body];
 
-    const newProducts = await FeaturedProd({ productid: featuredId });
+    const newProducts = new FeaturedProd({ productid: featuredId });
 
     const products = await newProducts.save();
 
