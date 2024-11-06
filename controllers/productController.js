@@ -12,7 +12,6 @@ export const saveProduct = async (req, res) => {
         const newProduct = new Product({ productId: id, name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, dateListed: date, soldStatus: soldStatus });
 
         const product = await newProduct.save();
-        console.log(product);
         if (product) {
             return res.status(200).json(product.productId);
         } else {
@@ -56,14 +55,12 @@ const weightFilter = async (weight) => {
 
 export const getProducts = async (req, res) => {
     const { kind, weight, colour, date, soldStatus } = req.body;
-    console.log(date);
     let filter = {};
     let sortFilter = { dateListed: -1 };
 
     kind !== 'all' && (filter.kind = kind);
     if (date !== 'all') {
         const filteredDate = await dateFilter(date);
-        console.log(filteredDate);
         filteredDate.date && (filter.dateListed = filteredDate?.date);
         filteredDate.sortedDate && (sortFilter.sortedDate = filteredDate?.sortedDate);
     };
@@ -75,7 +72,6 @@ export const getProducts = async (req, res) => {
     soldStatus && (filter.soldStatus = soldStatus);
 
     try {
-        console.log(filter, sortFilter);
         const products = await Product.find(filter).sort(sortFilter.sortedDate ? sortFilter.sortedDate : sortFilter);;
 
         if (products.length !== 0) {
@@ -109,7 +105,8 @@ export const getKindCount = async (req, res) => {
 
 export const getLatestProducts = async (req, res) => {
     try {
-        const products = await Product.find().limit(5);
+        const products = await Product.find().select('name weight shape dateListed').limit(5);
+        console.log(products);
 
         if (products.length > 0) {
             return res.status(200).json({ products });
@@ -124,11 +121,8 @@ export const getLatestProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     const gemstoneId = req.query.gemstoneId;
-    console.log(gemstoneId);
-
     try {
         const product = await Product.find({ productId: gemstoneId });
-        console.log(product);
         if (product) {
             return res.status(200).json({ product });
         } else {
