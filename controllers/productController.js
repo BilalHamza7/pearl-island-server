@@ -54,25 +54,8 @@ const weightFilter = async (weight) => {
 }
 
 export const getProducts = async (req, res) => {
-    const { kind, weight, colour, date, soldStatus } = req.body;
-    let filter = {};
-    let sortFilter = { dateListed: -1 };
-
-    kind !== 'all' && (filter.kind = kind);
-    if (date !== 'all') {
-        const filteredDate = await dateFilter(date);
-        filteredDate.date && (filter.dateListed = filteredDate?.date);
-        filteredDate.sortedDate && (sortFilter.sortedDate = filteredDate?.sortedDate);
-    };
-    if (weight !== 'all') {
-        const filteredWeight = await weightFilter(weight);
-        filter.weight = filteredWeight.weight;
-    };
-    colour !== 'all' && (filter.section = colour);
-    soldStatus && (filter.soldStatus = soldStatus);
-
     try {
-        const products = await Product.find(filter).sort(sortFilter.sortedDate ? sortFilter.sortedDate : sortFilter);;
+        const products = await Product.find().sort({ dateListed: -1 });
 
         if (products.length !== 0) {
             return res.status(200).json({ products });

@@ -16,14 +16,15 @@ export const saveRequest = async (req, res) => {
         let requestId = await getNextSequenceValue('request');
         const id = 'REQ-' + requestId;
         const newRequest = new Request({ requestId: id, fullName: fullName, companyName: companyName, email: email, mobileNumber: mobileNumber, message: message, gemstoneId: gemId, date: date, responded: false });
-        
-        const request = await newRequest.save();
+        console.log(newRequest);
 
-        if (!request) {
-            return res.status(200).json({ request });
-        } else {
-            return res.status(404).json({ message: 'Could Not Save Request, Please Try Again!' });
-        }
+        const request = await newRequest.save();
+        console.log(request);
+
+        if (request) {
+            console.log(request);
+            res.status(200).json({ message: 'Request Saved Successfully!', request: request.requestId });
+        };
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error!', error });
@@ -31,19 +32,10 @@ export const saveRequest = async (req, res) => {
 };
 
 export const getRequests = async (req, res) => {
-    const { date, responded } = req.body;
-    let filter = {};
-
-    if (date !== 'all') {
-        const filteredDate = await dateFilter(date);
-        filter.date = filteredDate.date;
-    };
-    responded !== 'all' && (filter.responded = responded);
 
     try {
-        const requests = await Request.find(filter).sort(filteredDate.sortedDate ? filteredDate.sortedDate : {});
-
-        if (requests.length > 0) {
+        const requests = await Request.find().sort({ date: -1 });
+        if (requests.length !== 0) {
             return res.status(200).json({ requests });
         } else {
             return res.status(404).json({ message: 'Could Not Find Any Requests!' });
