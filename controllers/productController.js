@@ -103,7 +103,7 @@ export const getLatestProducts = async (req, res) => {
 };
 
 export const getProductById = async (req, res) => {
-    const gemstoneId = req.query.gemstoneId;
+    const gemstoneId = req.body;
     try {
         const product = await Product.find({ productId: gemstoneId });
         if (product) {

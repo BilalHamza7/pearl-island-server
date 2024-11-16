@@ -84,13 +84,12 @@ export const getLatestRequests = async (req, res) => {
 };
 
 export const updateRequest = async (req, res) => {
-    const id = req.params.id;
-    const responded = req.body.responded;
-
+    const { id, responded } = req.body;
+    
     try {
-        const request = Request.findOneAndUpdate({ requestId: id }, { $set: { responded: responded } }, { new: true });
-
-        if (!request) {
+        const request = await Request.findOneAndUpdate({ requestId: id }, { $set: { responded: responded } }, { new: true });
+        
+        if (request) {
             return res.status(200).json({ request });
         } else {
             return res.status(404).json({ message: 'Could Not Update Request!' });
