@@ -3,7 +3,7 @@ import { getKindCount, getLatestProducts, getProductById, getProducts, saveProdu
 const router = express.Router();
 
 router.get('/getProducts', getProducts);
-router.get('/getProductById', getProductById);
+router.post('/getProductById', getProductById);
 router.post('/saveProduct', saveProduct);
 router.get('/getKindCount', getKindCount);
 router.get('/getLatestProducts', getLatestProducts);

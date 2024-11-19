@@ -89,7 +89,6 @@ export const getKindCount = async (req, res) => {
 export const getLatestProducts = async (req, res) => {
     try {
         const products = await Product.find().select('name weight shape dateListed').limit(5);
-        console.log(products);
 
         if (products.length > 0) {
             return res.status(200).json({ products });
@@ -103,10 +102,10 @@ export const getLatestProducts = async (req, res) => {
 };
 
 export const getProductById = async (req, res) => {
-    const gemstoneId = req.body;
+    const gemstoneId = req.body.gemstoneId;
     try {
-        const product = await Product.find({ productId: gemstoneId });
-        if (product) {
+        const product = await Product.find({ productId: { $in: gemstoneId } });
+        if (product.length > 0) {
             return res.status(200).json({ product });
         } else {
             return res.status(404).json({ message: 'Could Not Find A Product!' });
