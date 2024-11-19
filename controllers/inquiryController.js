@@ -1,11 +1,5 @@
 import { Inquiry } from '../models/inquiryModel.js';
 import { getNextSequenceValue } from './idCounterController.js';
-import { dateFilter } from './dateFilter.js';
-// save inquiry
-// get all Inquiries
-// search filter including all types in one endpoint
-// send the state of all filters which are initially 'all' / values when changed
-// get all full names of customers/inquiryId to list in a datalist
 
 export const saveInquiry = async (req, res) => {
     const { fullName, subject, companyName, email, mobileNumber, message } = req.body;
@@ -30,19 +24,8 @@ export const saveInquiry = async (req, res) => {
 };
 
 export const getInquirys = async (req, res) => {
-    const { subject, date, responded } = req.body;
-    let filter = {};
-
-    subject !== 'all' && (filter.subject = subject);
-    if (date !== 'all') {
-        const filteredDate = dateFilter(date);
-        filter.date = filteredDate.date;
-    };
-    responded !== 'all' && (filter.responded = responded);
-
     try {
-        const inquirys = await Inquiry.find(filter).sort(filteredDate.sortedDate ? filteredDate.sortedDate : {});
-
+        const inquirys = await Inquiry.find().sort({ date: -1 });
         if (inquirys.length !== 0) {
             return res.status(200).json({ inquirys });
         } else {
@@ -84,12 +67,11 @@ export const getLatestInquirys = async (req, res) => {
 };
 
 export const updateInquiry = async (req, res) => {
-    const id = req.params.id;
-    const responded = req.body.responded;
-
+    const { id, responded } = req.body;
+    
     try {
-        const inquiry = Inquiry.findOneAndUpdate({ inquiryId: id }, { $set: { responded: responded } }, { new: true });
-
+        const inquiry = await Inquiry.findOneAndUpdate({ inquiryId: id }, { $set: { responded: responded } }, { new: true });
+        
         if (inquiry) {
             return res.status(200).json({ inquiry });
         } else {
