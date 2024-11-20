@@ -70,6 +70,7 @@ export const getProducts = async (req, res) => {
 
 export const getProductById = async (req, res) => {
     const gemstoneId = req.body.gemstoneId;
+    console.log(gemstoneId);
     try {
         const product = await Product.find({ productId: { $in: gemstoneId } });
         if (product.length > 0) {
