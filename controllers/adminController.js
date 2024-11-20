@@ -24,18 +24,30 @@ const verifyPassword = async (enteredPassword, hashedPassword) => {  // for logi
 }
 
 export const getAdminDetails = async (req, res) => {
+    const id = 'ADMIN-0001';
     try {
-        const sessionAdmin = req.session;
-        if (sessionAdmin) {
-            res.status(200).json({ sessionAdmin });
-        } else {
-            F
-            res.status(500).json({ message: 'No Data In The Session!' });
+        const admin = await Admin.findOne({ adminId: id }).select('adminId fullName username email');
+        if (admin) {
+            console.log(admin);
+            return res.status(200).json({ admin });
         }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!' });
     }
+
+    // try {
+    //     const sessionAdmin = req.session;
+    //     if (sessionAdmin) {
+    //         res.status(200).json({ sessionAdmin });
+    //     } else {
+    //         F
+    //         res.status(500).json({ message: 'No Data In The Session!' });
+    //     }
+    // } catch (error) {
+    //     console.error(error);
+    //     res.status(500).json({ message: 'Internal Server Error!' });
+    // }
 }
 
 export const createAdmin = async (req, res) => {
@@ -122,18 +134,19 @@ export const updatePassword = async (req, res) => {
 }
 
 export const updateAdmin = async (req, res) => { // only admin details
+    const { adminId, fullName, username, email } = req.body;
     try {
         const admin = await Admin.findOneAndUpdate(
-            { adminId: req.params.id },
+            { adminId: adminId },
             {
-                fullname: req.body.fullName,
-                username: req.body.username,
-                email: req.body.email
+                fullName: fullName,
+                username: username,
+                email: email
             },
             { new: true }
         );
         if (admin) {
-            res.status(200).json(admin);
+            res.status(200).json(admin.adminId);
         }
         else {
             res.status(404).json({ message: 'Admin Not Found!' });
