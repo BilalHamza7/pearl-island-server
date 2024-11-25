@@ -23,6 +23,28 @@ export const saveProduct = async (req, res) => {
     }
 }
 
+export const updateProduct = async (req, res) => {
+    const { productId, name, kind, weight, colour, section, size, cut, origin, shape, treatment, clarity, certificate, summary, description, images, soldStatus } = req.body;
+
+    try {
+        const updateProduct = await Product.findOneAndUpdate(
+            { productId: productId },
+            { $set: { name: name, kind: kind, weight: weight, colour: colour, section: section, size: size, cut: cut, origin: origin, shape: shape, treatment: treatment, clarity: clarity, certificate: certificate, summary: summary, description: description, images: images, soldStatus: soldStatus } },
+            { new: true }
+        );
+
+
+        if (updateProduct) {
+            return res.status(200).json(updateProduct.productId);
+        } else {
+            return res.status(404).json({ message: 'Could Not Update Product, Please Try Again!' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error!', error });
+    }
+}
+
 const weightFilter = async (weight) => {
     const filteredWeight = {};
 
