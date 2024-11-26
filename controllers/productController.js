@@ -21,7 +21,7 @@ export const saveProduct = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
 
 export const updateProduct = async (req, res) => {
     const { productId, name, kind, weight, colour, section, size, cut, origin, shape, treatment, clarity, certificate, summary, description, images, soldStatus } = req.body;
@@ -43,7 +43,22 @@ export const updateProduct = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
+
+export const deleteProduct = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedProduct = await Product.findOneAndDelete({ productId: id });
+        if (deletedProduct) {
+            return res.status(200).json({ productId: deletedProduct.productId });
+        } else {
+            return res.status(404).json({ message: 'Could Not Delete Product, Please Try Again!' });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error!', error });
+    }
+};
 
 const weightFilter = async (weight) => {
     const filteredWeight = {};
@@ -73,7 +88,7 @@ const weightFilter = async (weight) => {
         console.error(error);
         return 'Could Not Filter Weight';
     }
-}
+};
 
 export const getProducts = async (req, res) => {
     try {
@@ -88,7 +103,7 @@ export const getProducts = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
 
 export const getProductById = async (req, res) => {
     const gemstoneId = req.body.gemstoneId;
@@ -104,7 +119,7 @@ export const getProductById = async (req, res) => {
         console.error(error);
         return res.status(500).json({ message: 'Internal Server Error!', error });
     }
-}
+};
 
 export const getLatestProducts = async (req, res) => {
     try {
@@ -151,7 +166,7 @@ export const getSoldStatus = async (req, res) => {
         console.error('Error in getKindCount:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
-}
+};
 
 
 
