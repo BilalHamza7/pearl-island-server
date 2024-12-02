@@ -97,12 +97,12 @@ export const verifyAdmin = async (req, res) => {  // for log in
 }
 
 export const searchAdmin = async (req, res) => { // before resetting password
-    const email = req.body;
+    const { email } = req.query;
     try {
         const admin = await Admin.findOne({ email });  // Searching for account
 
         if (admin) {
-            res.status(200).json(admin.email);
+            res.status(200).json({ username: admin.username });
         } else {
             res.status(404).json({ message: 'Please Check Your Email And Try Again!' });
         }
