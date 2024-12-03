@@ -115,7 +115,7 @@ export const searchAdmin = async (req, res) => { // before resetting password
 export const updatePassword = async (req, res) => {
     const { email, password } = req.body;
 
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     try {
         const admin = await Admin.findOneAndUpdate(
             { email: email },
