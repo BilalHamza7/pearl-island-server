@@ -24,30 +24,21 @@ const verifyPassword = async (enteredPassword, hashedPassword) => {  // for logi
 }
 
 export const getAdminDetails = async (req, res) => {
-    const id = 'ADMIN-0001';
     try {
-        const admin = await Admin.findOne({ adminId: id }).select('adminId fullName username email');
+        // Fetch admin _id from the session
+        const adminId = req.session.admin.adminId;
+
+        const admin = await Admin.findOne({ _id: adminId }).select('adminId fullName username email');
+
         if (admin) {
-            console.log(admin);
             return res.status(200).json({ admin });
         }
+
+        return res.status(404).json({ message: 'Admin not found.' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error!' });
     }
-
-    // try {
-    //     const sessionAdmin = req.session;
-    //     if (sessionAdmin) {
-    //         res.status(200).json({ sessionAdmin });
-    //     } else {
-    //         F
-    //         res.status(500).json({ message: 'No Data In The Session!' });
-    //     }
-    // } catch (error) {
-    //     console.error(error);
-    //     res.status(500).json({ message: 'Internal Server Error!' });
-    // }
 }
 
 export const createAdmin = async (req, res) => {
@@ -84,7 +75,7 @@ export const verifyAdmin = async (req, res) => {  // for log in
         if (admin) {
             const isMatch = await verifyPassword(password, admin.password); // verify entered Password
             if (isMatch) {
-                // req.session = { fullName: admin.fullName, email: admin.email, username: admin.username };
+                req.session.admin = { adminId: admin._id };
                 return res.status(200).json({ message: 'Admin Found!', adminId: admin.adminId });
             }
             return res.status(404).json({ message: 'Incorrect Password, Try Again!' });
