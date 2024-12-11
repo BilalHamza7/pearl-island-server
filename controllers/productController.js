@@ -157,13 +157,12 @@ export const getSoldStatus = async (req, res) => {
     try {
         const products = await Product.find().select('productId soldStatus');
         if (products.length > 0) {
-            console.log(products);
             return res.status(200).json({ products });
         } else {
             return res.status(404).json({ message: 'Could Not Find Any Products!' });
         }
     } catch (error) {
-        console.error('Error in getKindCount:', error);
+        console.error('Error in getSoldStatus:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 };
